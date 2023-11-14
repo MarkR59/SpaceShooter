@@ -70,12 +70,6 @@ tri_laser2X = 370
 tri_laser2Y = 490
 shooting = False
 
-crateImg = pygame.image.load('Images/crate.png')
-crateX = random.randint(0,736)
-crateY = 0
-crate_speedY = 2
-crate_exists = False
-
 triple_shotImg = pygame.image.load('Images/three.png')
 powerUp = False
 
@@ -84,11 +78,9 @@ score = 0
 clock = pygame.time.Clock()
 SPAWNMETEOR = pygame.USEREVENT + 1  #event to spawn meteor every 5 seconds
 SPAWNENEMIES = pygame.USEREVENT + 2 #event to spawn more eneimes every minute
-SPAWNCRATE = pygame.USEREVENT + 3 #event to spawn a crate for powerup
 spawn_counter = 0 #keeps track of how many times more enemies have spawned
 pygame.time.set_timer(SPAWNMETEOR, 5000)
 pygame.time.set_timer(SPAWNENEMIES, 60000)
-pygame.time.set_timer(SPAWNCRATE, 5000)
 
 #variable used to open or close the game window
 running = True
@@ -258,9 +250,6 @@ while running:
                     enemyY.append(random.randint(30,150))
                     enemyspeedX.append(4)
                     spawn_counter += 1
-            if event.type == SPAWNCRATE:
-                if crate_exists == False:
-                    crate_exists = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     changeX = -8
@@ -363,21 +352,7 @@ while running:
         if meteor_rightY > 530:
             meteor = False
             meteor_rightX = 800
-            meteor_rightY = 0
-
-        if crate_exists:
-            screen.blit(crateImg, (crateX, crateY))
-            crateY += crate_speedY
-
-        crate_distance = math.sqrt(math.pow(crateX - laserX, 2) + math.pow(crateY - laserY, 2))
-        if crate_distance < 36:
-            powerUp = True
-        if crateY > 530 or crate_distance < 36:
-            crate_exists = False
-            crateX = random.randint(0,736)
-            crateY = 0
-            laserY = 480
-            shooting = False     
+            meteor_rightY = 0    
 
         screen.blit(shipImg, (shipX, shipY)) 
 
